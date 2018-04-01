@@ -4,10 +4,15 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 public class AppData {
+
     private String name;
     private String version;
+    private int versionCode;
+    private String packageName;
+    private String application;
     private String description;
     private Drawable icon;
+    private Object object;
 
     public String getName() {
         return name;
@@ -23,6 +28,30 @@ public class AppData {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public int getVersionCode() {
+        return versionCode;
+    }
+
+    public void setVersionCode(int versionCode) {
+        this.versionCode = versionCode;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public String getApplication() {
+        return application;
+    }
+
+    public void setApplication(String application) {
+        this.application = application;
     }
 
     public String getDescription() {
@@ -41,4 +70,11 @@ public class AppData {
         this.icon = icon;
     }
 
+    public Object getObject() {
+        return object;
+    }
+
+    public void setObject(Object object) {
+        this.object = object;
+    }
 }

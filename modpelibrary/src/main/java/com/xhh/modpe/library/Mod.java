@@ -2,6 +2,7 @@ package com.xhh.modpe.library;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Looper;
 import android.widget.Toast;
 
 import com.xhh.modpe.library.activity.BaseActivity;
@@ -56,7 +57,7 @@ public class Mod implements Runnable, IFunction {
             return;
         }
         try {
-            Class<?> clazz=Class.forName(application);
+            Class<?> clazz = Class.forName(application);
             Constructor constructor = clazz.getConstructor(Activity.class, Context.class);
             constructor.newInstance(activity, context);
         } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
@@ -67,8 +68,9 @@ public class Mod implements Runnable, IFunction {
 
     public static void showWindow(Activity activity, Context context, Class clazz) {
         try {
-            Constructor<?> constructor = clazz.getConstructor(Context.class, Context.class);
-            BaseWindow baseActivity = (BaseWindow) constructor.newInstance(activity, context);
+            Constructor<?> constructor = clazz.getConstructor(Context.class);
+            BaseWindow baseActivity = (BaseWindow) constructor.newInstance(activity);
+            baseActivity.setContextMod(context);
             baseActivity.show();
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
             e.printStackTrace();
@@ -77,8 +79,9 @@ public class Mod implements Runnable, IFunction {
 
     public static void startActivity(Activity activity, Context context, Class clazz) {
         try {
-            Constructor<?> constructor = clazz.getConstructor(Context.class, Context.class);
-            BaseActivity baseActivity = (BaseActivity) constructor.newInstance(activity, context);
+            Constructor<?> constructor = clazz.getConstructor(Context.class);
+            BaseActivity baseActivity = (BaseActivity) constructor.newInstance(activity);
+            baseActivity.setContextMod(context);
             baseActivity.show();
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
             e.printStackTrace();
@@ -117,7 +120,9 @@ public class Mod implements Runnable, IFunction {
     }
 
     public static void print(Activity activity, String text) {
+        Looper.prepare();
         Toast.makeText(activity, text, Toast.LENGTH_LONG).show();
+        Looper.loop();
     }
 
     @Override

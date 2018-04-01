@@ -21,8 +21,8 @@ import com.xhh.modpe.library.base.BaseDialog;
 
 public abstract class BaseActivity extends BaseDialog {
 
-    public BaseActivity(@NonNull Context context, Context contextMod) {
-        super(context,contextMod);
+    public BaseActivity(@NonNull Context context) {
+        super(context);
     }
 
     @Override

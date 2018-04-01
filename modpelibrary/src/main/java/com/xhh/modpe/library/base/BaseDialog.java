@@ -14,10 +14,9 @@ public abstract class BaseDialog extends Dialog implements IFunction{
     private Activity activity;
     private Context contextMod;
 
-    public BaseDialog(Context context, Context contextMod) {
+    public BaseDialog(Context context) {
         super(context);
         this.activity = (Activity) context;
-        this.contextMod = contextMod;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         Function.getInstance().addListener(this);
     }
@@ -53,6 +52,14 @@ public abstract class BaseDialog extends Dialog implements IFunction{
     }
 
     public abstract void onCreate();
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
+    public void setContextMod(Context contextMod) {
+        this.contextMod = contextMod;
+    }
 
     @Override
     public void attackHook(long attacker, long victim) {

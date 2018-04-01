@@ -2,15 +2,13 @@ package com.xhh.modpe.java4modpe;
 
 import android.content.ComponentName;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.xhh.modpe.java4modpe.util.PathUtil;
+import com.xhh.modpe.java4modpe.util.ModuleUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    InputStream inputStream = getAssets().open(PathUtil.JAVA4MODPE);
-                    File file = new File(PathUtil.MOD_PATH);
+                    InputStream inputStream = getAssets().open(ModuleUtil.JAVA4MODPE);
+                    File file = new File(ModuleUtil.MOD_PATH);
                     if (!file.exists()) {
                         if (file.createNewFile()) {
 
@@ -51,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 Intent intent = new Intent();
-                ComponentName componentName = new ComponentName(PathUtil.PACKAGE_BLOCKLAUNCHER,
-                        PathUtil.PACKAGE_BLOCKLAUNCHER_ACTIVITY);
-                intent.setData(Uri.fromFile(new File(PathUtil.MOD_PATH)));
+                ComponentName componentName = new ComponentName(ModuleUtil.PACKAGE_BLOCKLAUNCHER,
+                        ModuleUtil.PACKAGE_BLOCKLAUNCHER_ACTIVITY);
+                intent.setData(Uri.fromFile(new File(ModuleUtil.MOD_PATH)));
                 intent.setComponent(componentName);
                 startActivity(intent);
             }

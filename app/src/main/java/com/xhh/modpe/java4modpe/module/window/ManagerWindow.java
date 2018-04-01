@@ -14,8 +14,8 @@ public class ManagerWindow extends BaseWindow implements View.OnClickListener {
 
     private ImageView imageView;
 
-    public ManagerWindow(@NonNull Context context, Context contextMod) {
-        super(context, contextMod);
+    public ManagerWindow(@NonNull Context context) {
+        super(context);
     }
 
     @Override

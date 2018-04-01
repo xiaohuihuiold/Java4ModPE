@@ -20,8 +20,8 @@ public class ManagerActivity extends BaseActivity {
 
     private ListView listView;
 
-    public ManagerActivity(@NonNull Context context, Context contextMod) {
-        super(context, contextMod);
+    public ManagerActivity(@NonNull Context context) {
+        super(context);
     }
 
     @Override
@@ -51,7 +51,6 @@ public class ManagerActivity extends BaseActivity {
                 }
             }
         }
-        Toast.makeText(getActivity(), "" + appDatas.size(), Toast.LENGTH_LONG).show();
         return appDatas;
     }
 

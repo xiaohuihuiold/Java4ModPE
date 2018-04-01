@@ -13,8 +13,6 @@ public class Application implements IFunction {
     private Activity activity;
     private Context context;
 
-    private ArrayList<Long> entities = new ArrayList<>();
-
     public Application(Activity activity, Context context) {
         this.activity = activity;
         this.context = context;
@@ -79,9 +77,7 @@ public class Application implements IFunction {
 
     @Override
     public void entityHurtHook(long attacker, long victim, int halfhearts) {
-        if (entities.size() < 33) {
-            entities.add(victim);
-        }
+
     }
 
     @Override

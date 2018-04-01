@@ -13,19 +13,19 @@ import com.xhh.modpe.library.base.BaseDialog;
 import com.xhh.modpe.library.base.Function;
 import com.xhh.modpe.library.base.IFunction;
 
-public abstract class BaseWindow extends BaseDialog implements IFunction {
+public abstract class BaseWindow extends BaseDialog{
 
     private Vibrator vibrator;
 
-    private boolean isLongClick=false;
+    private boolean isLongClick = false;
 
-    public BaseWindow(@NonNull Context context, Context contextMod) {
-        super(context,contextMod);
+    public BaseWindow(@NonNull Context context) {
+        super(context);
         setCanceledOnTouchOutside(false);
         setCancelable(false);
 
         Function.getInstance().addListener(this);
-        vibrator=(Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     @Override
@@ -44,12 +44,12 @@ public abstract class BaseWindow extends BaseDialog implements IFunction {
         onCreate();
     }
 
-    public void setMoveView(View view){
+    public void setMoveView(View view) {
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                isLongClick=true;
-                if(vibrator!=null){
+                isLongClick = true;
+                if (vibrator != null) {
                     vibrator.vibrate(30);
                 }
                 return false;
@@ -58,6 +58,7 @@ public abstract class BaseWindow extends BaseDialog implements IFunction {
         view.setOnTouchListener(new View.OnTouchListener() {
             private int tx;
             private int ty;
+
             @Override
             public boolean onTouch(final View p1, MotionEvent p2) {
                 switch (p2.getAction()) {
@@ -67,7 +68,7 @@ public abstract class BaseWindow extends BaseDialog implements IFunction {
                         break;
                     case MotionEvent.ACTION_MOVE:
                         if (isLongClick) {
-                            setXY((int) p2.getRawX() - tx,(int) p2.getRawY() - ty);
+                            setXY((int) p2.getRawX() - tx, (int) p2.getRawY() - ty);
                         }
                         break;
                     case MotionEvent.ACTION_UP:
