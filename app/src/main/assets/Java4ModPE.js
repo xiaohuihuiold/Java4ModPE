@@ -38,9 +38,8 @@ try{
 
   var dcLoader=new DexClassLoader(dexPath, dexOutputDir, libPath, ctxMc.getClassLoader());
   var clazz=dcLoader.loadClass(clazzPackage);
-  var invocationHandler=new InvocationHandler({invoke:function(proxy, method, args) {invokeJava(proxy,method,args);}});
   object = clazz.newInstance();
-  object.init(moduleApplication,ctxMc, ctxMod,invocationHandler);
+  object.init(moduleApplication,ctxMc, ctxMod);
 }catch(e){
   print(e);
 }

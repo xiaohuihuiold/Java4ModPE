@@ -6,7 +6,6 @@ import android.os.Looper;
 import android.widget.Toast;
 
 import com.xhh.modpe.library.activity.BaseActivity;
-import com.xhh.modpe.library.api.JavaScript;
 import com.xhh.modpe.library.base.Function;
 import com.xhh.modpe.library.base.IFunction;
 import com.xhh.modpe.library.window.BaseWindow;
@@ -29,23 +28,20 @@ public class Mod implements Runnable, IFunction {
     private String application;
     private Activity activity;
     private Context context;
-    private InvocationHandler invocationHandler;
 
-    public static JavaScript javaScript;
     public static boolean isPro = false;
 
-    public void init(String application, Activity activity, Context context, InvocationHandler invocationHandler) {
+    public void init(String application, Activity activity, Context context) {
         this.application = application;
         this.activity = activity;
         this.context = context;
-        this.invocationHandler = invocationHandler;
+
 
         if (activity.getPackageName().equals("net.zhuoweizhang.mcpelauncher")) {
             isPro = false;
         } else {
             isPro = true;
         }
-        javaScript = (JavaScript) Proxy.newProxyInstance(getClass().getClassLoader(), new Class[]{JavaScript.class}, invocationHandler);
 
         activity.runOnUiThread(this);
 

@@ -1,5 +1,6 @@
 package com.xhh.modpe.java4modpe.module.manager;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -16,6 +17,7 @@ import com.xhh.modpe.library.Mod;
 import com.xhh.modpe.library.base.IFunction;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,9 @@ import dalvik.system.DexClassLoader;
 public class ModuleManager implements Runnable {
 
     private static ModuleManager INSTANCE;
+
+    private static Class clazz;
+    private static Method method;
 
     private Application application;
     private ArrayList<AppData> appDatas = new ArrayList<>();
@@ -115,8 +120,11 @@ public class ModuleManager implements Runnable {
             Context ctxMod = application.getActivity().createPackageContext(modpePackage, Context.CONTEXT_IGNORE_SECURITY | Context.CONTEXT_INCLUDE_CODE);
 
             DexClassLoader dcLoader = new DexClassLoader(dexPath, dexOutputDir, libPath, application.getActivity().getClassLoader());
-            Class clazz = dcLoader.loadClass(ModuleUtil.PACKAGE_MODULE);
+            Class<?> clazz = dcLoader.loadClass(ModuleUtil.PACKAGE_MODULE);
             object = clazz.newInstance();
+            Method method=clazz.getMethod("init",String.class, Activity.class,Context.class);
+            method.invoke(object,appData.getApplication(),application.getActivity(),ctxMod);
+            appData.setClassLoader(dcLoader);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -163,6 +171,18 @@ public class ModuleManager implements Runnable {
 
     public interface OnModuleLoadListener {
         public void onFinished(ArrayList<AppData> appDatas);
+    }
+
+    public static void onFunction(String methodName,ArrayList<AppData> appDatas,Class<?>[] params,Object[] values){
+        for(AppData appData:appDatas){
+            try {
+                clazz=appData.getClassLoader().loadClass(ModuleUtil.PACKAGE_MODULE);
+                method=clazz.getMethod(methodName,params);
+                method.invoke(appData.getObject(),values);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

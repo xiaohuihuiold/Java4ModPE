@@ -13,6 +13,7 @@ public class AppData {
     private String description;
     private Drawable icon;
     private Object object;
+    private ClassLoader classLoader;
 
     public String getName() {
         return name;
@@ -76,5 +77,13 @@ public class AppData {
 
     public void setObject(Object object) {
         this.object = object;
+    }
+
+    public ClassLoader getClassLoader() {
+        return classLoader;
+    }
+
+    public void setClassLoader(ClassLoader classLoader) {
+        this.classLoader = classLoader;
     }
 }
