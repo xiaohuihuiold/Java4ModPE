@@ -13,6 +13,10 @@ public class ModPE {
 
     private final static String TAG = "ModPE";
 
+    public static void print(String str){
+        Mod.print(str);
+    }
+
     public static void addItemInventory(int itemId, int itemNumber, int itemDamage) {
         if (!Mod.isPro) {
             if (!ScriptManager.nativeIsValidItem(itemId)) {

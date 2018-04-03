@@ -26,15 +26,15 @@ import java.lang.reflect.Proxy;
 public class Mod implements Runnable, IFunction {
 
     private String application;
-    private Activity activity;
-    private Context context;
+    private static Activity activity;
+    private static Context context;
 
     public static boolean isPro = false;
 
-    public void init(String application, Activity activity, Context context) {
+    public void init(String application, Activity act, Context con) {
         this.application = application;
-        this.activity = activity;
-        this.context = context;
+        activity = act;
+        context = con;
 
 
         if (activity.getPackageName().equals("net.zhuoweizhang.mcpelauncher")) {
@@ -58,7 +58,7 @@ public class Mod implements Runnable, IFunction {
             constructor.newInstance(activity, context);
         } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
             e.printStackTrace();
-            print(activity, "Mod加载错误:" + e.getMessage());
+            print("Mod加载错误:" + e.getMessage());
         }
     }
 
@@ -115,10 +115,13 @@ public class Mod implements Runnable, IFunction {
         throw new RuntimeException("Not an entity: " + paramObject + " (" + paramObject.getClass().toString() + ")");
     }
 
-    public static void print(Activity activity, String text) {
-        Looper.prepare();
-        Toast.makeText(activity, text, Toast.LENGTH_LONG).show();
-        Looper.loop();
+    public static void print(final String text) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(activity, text, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override

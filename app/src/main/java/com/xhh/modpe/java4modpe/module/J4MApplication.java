@@ -47,7 +47,7 @@ public class J4MApplication extends Application implements ModuleManager.OnModul
     @Override
     public void onFinished(ArrayList<AppData> appDatas) {
         this.appDatas = appDatas;
-        Mod.print(getActivity(), "加载" + appDatas.size() + "个modpe");
+        Mod.print("加载" + appDatas.size() + "个modpe");
     }
 
     @Override
