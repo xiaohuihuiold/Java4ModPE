@@ -4,7 +4,7 @@ import android.os.Environment;
 
 public class ModuleUtil {
     public static final String SDCARD = Environment.getExternalStorageDirectory().getPath() + "/";
-    public static final String JAVA4MODPE = "Java4ModPE";
+    public static final String JAVA4MODPE = "Java4ModPE.js";
     public static final String MOD_PATH = SDCARD + JAVA4MODPE;
 
     public static final String PACKAGE_BLOCKLAUNCHER="net.zhuoweizhang.mcpelauncher";

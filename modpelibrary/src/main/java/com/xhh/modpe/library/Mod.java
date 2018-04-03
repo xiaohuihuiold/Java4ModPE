@@ -99,6 +99,21 @@ public class Mod implements Runnable, IFunction {
         return object;
     }
 
+    public static Object exec(String className, String methodName, Class<?>[] classes, Object[] objects) {
+        Object object = null;
+        if (!isPro) {
+            className =className;
+        }
+        try {
+            Class<?> scr = Class.forName(className);
+            Method method = scr.getMethod(methodName, classes);
+            object = method.invoke(null, objects);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return object;
+    }
+
     public static long getEntityId(Object paramObject) {
         if (paramObject == null) {
             return -1L;
