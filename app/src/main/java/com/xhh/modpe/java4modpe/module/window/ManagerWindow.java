@@ -1,6 +1,8 @@
 package com.xhh.modpe.java4modpe.module.window;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageButton;
@@ -8,6 +10,7 @@ import android.widget.ImageView;
 
 import com.xhh.modpe.java4modpe.R;
 import com.xhh.modpe.java4modpe.module.activity.ManagerActivity;
+import com.xhh.modpe.library.api.ModPE;
 import com.xhh.modpe.library.window.BaseWindow;
 
 public class ManagerWindow extends BaseWindow implements View.OnClickListener {
