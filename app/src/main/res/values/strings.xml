@@ -7,4 +7,9 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="nav_title_home">首页</string>
+    <string name="nav_title_module">模块</string>
+    <string name="nav_title_about">关于</string>
+    <string name="nav_title_other">其它</string>
+    <string name="home_module_status">模块启用状态</string>
 </resources>

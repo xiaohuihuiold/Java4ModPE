@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.xhh.modpe.java4modpe.R;
+import com.xhh.modpe.java4modpe.fragment.HomeFragment;
+import com.xhh.modpe.java4modpe.fragment.ModuleFragment;
 import com.xhh.modpe.java4modpe.util.ModuleUtil;
 
 import java.io.File;
@@ -28,59 +31,103 @@ import java.io.OutputStream;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private Toolbar toolbar;
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle toggle;
+    private NavigationView navigationView;
+
+    private HomeFragment homeFragment;
+    private ModuleFragment moduleFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    InputStream inputStream = getAssets().open(ModuleUtil.JAVA4MODPE);
-                    File file = new File(ModuleUtil.MOD_PATH);
-                    if (!file.exists()) {
-                        if (file.createNewFile()) {
+        /** try {
+         InputStream inputStream = getAssets().open(ModuleUtil.JAVA4MODPE);
+         File file = new File(ModuleUtil.MOD_PATH);
+         if (!file.exists()) {
+         if (file.createNewFile()) {
 
-                        }
-                    }
-                    OutputStream outputStream = new FileOutputStream(file);
-                    byte[] bytes = new byte[1024];
-                    int is = 0;
-                    while ((is = inputStream.read(bytes)) != -1) {
-                        outputStream.write(bytes, 0, is);
-                    }
-                    inputStream.close();
-                    outputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+         }
+         }
+         OutputStream outputStream = new FileOutputStream(file);
+         byte[] bytes = new byte[1024];
+         int is = 0;
+         while ((is = inputStream.read(bytes)) != -1) {
+         outputStream.write(bytes, 0, is);
+         }
+         inputStream.close();
+         outputStream.close();
+         } catch (IOException e) {
+         e.printStackTrace();
+         }
 
-                Intent intent = new Intent();
-                ComponentName componentName = new ComponentName(ModuleUtil.PACKAGE_BLOCKLAUNCHER,
-                        ModuleUtil.PACKAGE_BLOCKLAUNCHER_ACTIVITY);
-                intent.setData(Uri.fromFile(new File(ModuleUtil.MOD_PATH)));
-                intent.setComponent(componentName);
-                startActivity(intent);
-            }
-        });
+         Intent intent = new Intent();
+         ComponentName componentName = new ComponentName(ModuleUtil.PACKAGE_BLOCKLAUNCHER,
+         ModuleUtil.PACKAGE_BLOCKLAUNCHER_ACTIVITY);
+         intent.setData(Uri.fromFile(new File(ModuleUtil.MOD_PATH)));
+         intent.setComponent(componentName);
+         startActivity(intent);**/
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        initView();
+        initData();
+    }
+
+    private void initView() {
+        drawer = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+    }
+
+    private void initData() {
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        showHome();
+    }
+
+    private void showHome() {
+        toolbar.setTitle(R.string.app_name);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        if (homeFragment == null) {
+            homeFragment = new HomeFragment();
+            fragmentTransaction.add(R.id.main_fragment, homeFragment);
+        }
+        hideAll(fragmentTransaction);
+        fragmentTransaction.show(homeFragment);
+        fragmentTransaction.commit();
+    }
+
+    private void showModule() {
+        toolbar.setTitle(R.string.nav_title_module);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        if (moduleFragment == null) {
+            moduleFragment = new ModuleFragment();
+            fragmentTransaction.add(R.id.main_fragment, moduleFragment);
+        }
+        hideAll(fragmentTransaction);
+        fragmentTransaction.show(moduleFragment);
+        fragmentTransaction.commit();
+    }
+
+    private void hideAll(FragmentTransaction fragmentTransaction) {
+        if (homeFragment != null) {
+            fragmentTransaction.hide(homeFragment);
+        }
+        if (moduleFragment != null) {
+            fragmentTransaction.hide(moduleFragment);
+        }
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -90,20 +137,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_about) {
             return true;
         }
 
@@ -113,24 +155,15 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch (id){
+            case R.id.nav_home:
+                showHome();
+                break;
+            case R.id.nav_module:
+                showModule();
+                break;
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
