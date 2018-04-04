@@ -6,7 +6,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,6 +29,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,13 +39,17 @@ public class MainActivity extends AppCompatActivity
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
 
-    private HomeFragment homeFragment;
-    private ModuleFragment moduleFragment;
+    /*private HomeFragment homeFragment;
+    private ModuleFragment moduleFragment;*/
+
+    private Bundle savedInstanceState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.activity_main);
+        this.savedInstanceState = savedInstanceState;
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -83,21 +90,60 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initData() {
-        toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
         showHome();
     }
 
-    private void showHome() {
+    private void showHome(){
+        showFragment(getString(R.string.app_name),"fragment_home",HomeFragment.class);
+    }
+
+    private void showModule(){
+        showFragment(getString(R.string.nav_title_module),"fragment_module",ModuleFragment.class);
+    }
+
+    private void showFragment(String title, String tag, Class<?> fragmentClass) {
+        try {
+            toolbar.setTitle(title);
+            Fragment fragment = null;
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            if (savedInstanceState == null) {
+                fragment = (Fragment) fragmentClass.newInstance();
+                fragmentTransaction.add(R.id.main_fragment, fragment, tag);
+            } else {
+                fragment = (Fragment) getSupportFragmentManager().findFragmentByTag(tag);
+            }
+            if (fragment == null) {
+                fragment = (Fragment) fragmentClass.newInstance();
+                fragmentTransaction.add(R.id.main_fragment, fragment, tag);
+            }
+            hideAll(fragmentTransaction);
+            fragmentTransaction.show(fragment);
+            fragmentTransaction.commit();
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+   /* private void showHome() {
         toolbar.setTitle(R.string.app_name);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        if (savedInstanceState == null) {
+            homeFragment = new HomeFragment();
+            fragmentTransaction.add(R.id.main_fragment, homeFragment, "home");
+        } else {
+            homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("home");
+        }
         if (homeFragment == null) {
             homeFragment = new HomeFragment();
-            fragmentTransaction.add(R.id.main_fragment, homeFragment);
+            fragmentTransaction.add(R.id.main_fragment, homeFragment, "home");
         }
         hideAll(fragmentTransaction);
         fragmentTransaction.show(homeFragment);
@@ -108,16 +154,24 @@ public class MainActivity extends AppCompatActivity
         toolbar.setTitle(R.string.nav_title_module);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        if (savedInstanceState == null) {
+            moduleFragment = new ModuleFragment();
+            fragmentTransaction.add(R.id.main_fragment, moduleFragment, "module");
+        } else {
+            moduleFragment = (ModuleFragment) getSupportFragmentManager().findFragmentByTag("module");
+        }
         if (moduleFragment == null) {
             moduleFragment = new ModuleFragment();
-            fragmentTransaction.add(R.id.main_fragment, moduleFragment);
+            fragmentTransaction.add(R.id.main_fragment, moduleFragment, "module");
         }
         hideAll(fragmentTransaction);
         fragmentTransaction.show(moduleFragment);
         fragmentTransaction.commit();
-    }
+    }*/
 
     private void hideAll(FragmentTransaction fragmentTransaction) {
+        HomeFragment homeFragment= (HomeFragment) getSupportFragmentManager().findFragmentByTag("fragment_home");
+        ModuleFragment moduleFragment= (ModuleFragment) getSupportFragmentManager().findFragmentByTag("fragment_module");
         if (homeFragment != null) {
             fragmentTransaction.hide(homeFragment);
         }
@@ -156,7 +210,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.nav_home:
                 showHome();
                 break;
