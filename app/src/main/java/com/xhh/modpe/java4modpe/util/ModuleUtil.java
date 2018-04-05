@@ -2,11 +2,17 @@ package com.xhh.modpe.java4modpe.util;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.util.Log;
+
+import com.xhh.modpe.java4modpe.module.model.AppData;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ModuleUtil {
     public static final String SDCARD = Environment.getExternalStorageDirectory().getPath() + "/";
@@ -98,6 +104,52 @@ public class ModuleUtil {
             }
         }
         return true;
+    }
+
+    public static ArrayList<PackageInfo> getUserApp(Context context) {
+        ArrayList<PackageInfo> packageInfos = new ArrayList<>();
+        PackageManager packageManager = context.getPackageManager();
+        List<PackageInfo> packageInfoList = packageManager.getInstalledPackages(0);
+        for (PackageInfo packageInfo : packageInfoList) {
+            if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+                packageInfos.add(packageInfo);
+            }
+        }
+        return packageInfos;
+    }
+
+    public static ArrayList<AppData> getModules(ArrayList<PackageInfo> packageInfos,Context context) {
+        ArrayList<AppData> appDatas = new ArrayList<>();
+        for (PackageInfo packageInfo : packageInfos) {
+            AppData appData = getAppData(packageInfo,context);
+            if (appData != null) {
+                appDatas.add(appData);
+            }
+        }
+        return appDatas;
+    }
+
+    public static AppData getAppData(PackageInfo packageInfo,Context context) {
+        if (packageInfo == null) return null;
+        AppData appData = null;
+        try {
+            ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(packageInfo.packageName, PackageManager.GET_META_DATA);
+            if (applicationInfo.metaData.getString(ModuleUtil.META_DATA_MODPE_NAME) == null) {
+                return null;
+            }
+            appData = new AppData();
+            appData.setName((String) applicationInfo.loadLabel(context.getPackageManager()));
+            appData.setVersion(packageInfo.versionName);
+            appData.setVersionCode(packageInfo.versionCode);
+            appData.setPackageName(packageInfo.packageName);
+            appData.setApplication(applicationInfo.metaData.getString(ModuleUtil.META_DATA_MODPE_APPLICATION));
+            appData.setDescription(applicationInfo.metaData.getString(ModuleUtil.META_DATA_MODPE_DESCRIPTION));
+            appData.setIcon(applicationInfo.loadIcon(context.getPackageManager()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return appData;
     }
 
 }

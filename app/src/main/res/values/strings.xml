@@ -21,4 +21,7 @@
     <string name="unkonw_mcpe">\u3000\u3000MinecraftPE版本</string>
     <string name="unkonw_bl">\u3000\u3000Blocklauncher版本</string>
     <string name="unkonw_bl_pro">\u3000\u3000BlocklauncherPro版本</string>
+    <string name="module_name">应用名</string>
+    <string name="module_version">应用版本</string>
+    <string name="module_description">应用介绍</string>
 </resources>
