@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -18,6 +19,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import com.xhh.modpe.java4modpe.R;
 import com.xhh.modpe.java4modpe.fragment.HomeFragment;
@@ -38,9 +42,6 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
-
-    /*private HomeFragment homeFragment;
-    private ModuleFragment moduleFragment;*/
 
     private Bundle savedInstanceState;
 
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity
     private void initView() {
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+
     }
 
     private void initData() {
@@ -99,12 +101,12 @@ public class MainActivity extends AppCompatActivity
         showHome();
     }
 
-    private void showHome(){
-        showFragment(getString(R.string.app_name),"fragment_home",HomeFragment.class);
+    private void showHome() {
+        showFragment(getString(R.string.app_name), "fragment_home", HomeFragment.class);
     }
 
-    private void showModule(){
-        showFragment(getString(R.string.nav_title_module),"fragment_module",ModuleFragment.class);
+    private void showModule() {
+        showFragment(getString(R.string.nav_title_module), "fragment_module", ModuleFragment.class);
     }
 
     private void showFragment(String title, String tag, Class<?> fragmentClass) {
@@ -131,47 +133,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-   /* private void showHome() {
-        toolbar.setTitle(R.string.app_name);
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        if (savedInstanceState == null) {
-            homeFragment = new HomeFragment();
-            fragmentTransaction.add(R.id.main_fragment, homeFragment, "home");
-        } else {
-            homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("home");
-        }
-        if (homeFragment == null) {
-            homeFragment = new HomeFragment();
-            fragmentTransaction.add(R.id.main_fragment, homeFragment, "home");
-        }
-        hideAll(fragmentTransaction);
-        fragmentTransaction.show(homeFragment);
-        fragmentTransaction.commit();
-    }
-
-    private void showModule() {
-        toolbar.setTitle(R.string.nav_title_module);
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        if (savedInstanceState == null) {
-            moduleFragment = new ModuleFragment();
-            fragmentTransaction.add(R.id.main_fragment, moduleFragment, "module");
-        } else {
-            moduleFragment = (ModuleFragment) getSupportFragmentManager().findFragmentByTag("module");
-        }
-        if (moduleFragment == null) {
-            moduleFragment = new ModuleFragment();
-            fragmentTransaction.add(R.id.main_fragment, moduleFragment, "module");
-        }
-        hideAll(fragmentTransaction);
-        fragmentTransaction.show(moduleFragment);
-        fragmentTransaction.commit();
-    }*/
-
     private void hideAll(FragmentTransaction fragmentTransaction) {
-        HomeFragment homeFragment= (HomeFragment) getSupportFragmentManager().findFragmentByTag("fragment_home");
-        ModuleFragment moduleFragment= (ModuleFragment) getSupportFragmentManager().findFragmentByTag("fragment_module");
+        HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("fragment_home");
+        ModuleFragment moduleFragment = (ModuleFragment) getSupportFragmentManager().findFragmentByTag("fragment_module");
         if (homeFragment != null) {
             fragmentTransaction.hide(homeFragment);
         }

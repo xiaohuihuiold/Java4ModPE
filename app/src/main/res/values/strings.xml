@@ -12,4 +12,13 @@
     <string name="nav_title_about">关于</string>
     <string name="nav_title_other">其它</string>
     <string name="home_module_status">模块启用状态</string>
+    <string name="unknow">未知</string>
+    <string name="install_update">安装/更新</string>
+    <string name="phone_info">设备信息</string>
+    <string name="unkonw_uu">\u3000\u3000未知</string>
+    <string name="unkonw_os">\u3000\u3000系统版本</string>
+    <string name="unkonw_device">\u3000\u3000设备</string>
+    <string name="unkonw_mcpe">\u3000\u3000MinecraftPE版本</string>
+    <string name="unkonw_bl">\u3000\u3000Blocklauncher版本</string>
+    <string name="unkonw_bl_pro">\u3000\u3000BlocklauncherPro版本</string>
 </resources>
