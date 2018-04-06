@@ -1,11 +1,15 @@
 package com.xhh.modpe.java4modpe.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -55,7 +59,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         return appDatas.size();
     }
 
-    class ModuleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+    class ModuleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, CompoundButton.OnCheckedChangeListener {
         public ImageView icon;
         public TextView name;
         public Switch enable;
@@ -70,6 +74,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
             desc = itemView.findViewById(R.id.recycler_module_description);
             cardView = itemView.findViewById(R.id.recycler_module_card);
             cardView.setOnClickListener(this);
+            cardView.setOnLongClickListener(this);
             enable.setOnCheckedChangeListener(this);
         }
 
@@ -81,6 +86,33 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         @Override
         public void onClick(View v) {
             enable.setChecked(!enable.isChecked());
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            PopupMenu pop = new PopupMenu(context, v);
+            pop.getMenuInflater().inflate(R.menu.module_menu, pop.getMenu());
+            pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.module_menu_info:
+                            Intent intent = new Intent()
+                                    .setAction("android.settings.APPLICATION_DETAILS_SETTINGS")
+                                    .setData(Uri.fromParts("package", appDatas.get(getAdapterPosition()).getPackageName(), null));
+                            context.startActivity(intent);
+                            break;
+                        case R.id.module_menu_un:
+                            Uri uri = Uri.fromParts("package", appDatas.get(getAdapterPosition()).getPackageName(), null);
+                            Intent intentdel = new Intent(Intent.ACTION_DELETE, uri);
+                            context.startActivity(intentdel);
+                            break;
+                    }
+                    return false;
+                }
+            });
+            pop.show();
+            return false;
         }
     }
 }

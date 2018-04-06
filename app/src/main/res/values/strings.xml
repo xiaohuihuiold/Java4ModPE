@@ -4,7 +4,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_subtitle">ModPE管理器</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="nav_title_home">首页</string>
@@ -24,4 +24,6 @@
     <string name="module_name">应用名</string>
     <string name="module_version">应用版本</string>
     <string name="module_description">应用介绍</string>
+    <string name="popup_module_menu_info">详细信息</string>
+    <string name="uninstall">卸载</string>
 </resources>
