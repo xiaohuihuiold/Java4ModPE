@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Java4ModPE.iml" filepath="$PROJECT_DIR$/Java4ModPE.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/modpelibrary/modpelibrary.iml" filepath="$PROJECT_DIR$/modpelibrary/modpelibrary.iml" />
     </modules>
   </component>
 </project>

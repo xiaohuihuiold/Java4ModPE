@@ -1,8 +1,11 @@
 package com.xhh.modpe.java4modpe.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +25,11 @@ import android.widget.Toast;
 import com.xhh.modpe.java4modpe.R;
 import com.xhh.modpe.java4modpe.util.ModuleUtil;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Objects;
 
 public class HomeFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
@@ -77,7 +85,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Swip
         switchStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ModuleUtil.setEnable(getContext(),isChecked);
+                ModuleUtil.setEnable(getContext(), isChecked);
             }
         });
 
@@ -116,7 +124,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Swip
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        if(result.toString().equals("")){
+        if (result.toString().equals("")) {
             result.append("未找到").append(packageName);
         }
         return result.toString();
@@ -128,6 +136,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Swip
             case R.id.home_card_status:
                 break;
             case R.id.home_card_install:
+                try {
+                    InputStream inputStream = getActivity().getAssets().open(ModuleUtil.JAVA4MODPE);
+                    File file = new File(ModuleUtil.MOD_PATH);
+                    if (!file.exists()) {
+                        if (file.createNewFile()) {
+
+                        }
+                    }
+                    OutputStream outputStream = new FileOutputStream(file);
+                    byte[] bytes = new byte[1024];
+                    int is = 0;
+                    while ((is = inputStream.read(bytes)) != -1) {
+                        outputStream.write(bytes, 0, is);
+                    }
+                    inputStream.close();
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Intent intent = new Intent();
+                ComponentName componentName = new ComponentName(ModuleUtil.PACKAGE_BLOCKLAUNCHER,
+                        ModuleUtil.PACKAGE_BLOCKLAUNCHER_ACTIVITY);
+                intent.setData(Uri.fromFile(new File(ModuleUtil.MOD_PATH)));
+                intent.setComponent(componentName);
+                startActivity(intent);
                 break;
             case R.id.home_card_info:
                 loadDeviceInfo();
