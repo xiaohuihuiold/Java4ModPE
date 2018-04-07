@@ -15,7 +15,6 @@ var ctxMc=com.mojang.minecraftpe.MainActivity.currentMainActivity.get();
 
 var moduleApplication="com.xhh.modpe.java4modpe.module.J4MApplication";
 var modpePackage="com.xhh.modpe.java4modpe";
-var clazzPackage="com.xhh.modpe.library.Mod";
 
 var object;
 
@@ -37,15 +36,11 @@ try{
   var ctxMod = ctxMc.createPackageContext(modpePackage,  Context.CONTEXT_IGNORE_SECURITY | Context.CONTEXT_INCLUDE_CODE) ;
 
   var dcLoader=new DexClassLoader(dexPath, dexOutputDir, libPath, ctxMc.getClassLoader());
-  var clazz=dcLoader.loadClass(clazzPackage);
+  var clazz=dcLoader.loadClass(moduleApplication);
   object = clazz.newInstance();
-  object.init(moduleApplication,ctxMc, ctxMod);
+  object.init(ctxMc, ctxMod);
 }catch(e){
   print(e);
-}
-
-function invokeJava(proxy,method,args){
-  if(object!=undefined)object.invokeJava(proxy,method,args);
 }
 
 function attackHook(attacker, victim){
