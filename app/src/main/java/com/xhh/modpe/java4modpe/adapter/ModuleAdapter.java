@@ -19,7 +19,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.xhh.modpe.java4modpe.R;
-import com.xhh.modpe.java4modpe.module.model.AppData;
+import com.xhh.modpe.java4modpe.model.AppData;
 import com.xhh.modpe.java4modpe.util.ModuleUtil;
 
 import java.util.ArrayList;

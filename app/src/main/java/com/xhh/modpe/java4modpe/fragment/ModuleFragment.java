@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 
 import com.xhh.modpe.java4modpe.R;
 import com.xhh.modpe.java4modpe.adapter.ModuleAdapter;
-import com.xhh.modpe.java4modpe.module.manager.ModuleManager;
 import com.xhh.modpe.java4modpe.util.ModuleUtil;
 
 public class ModuleFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {

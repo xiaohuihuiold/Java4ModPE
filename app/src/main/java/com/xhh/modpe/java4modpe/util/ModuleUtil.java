@@ -7,7 +7,8 @@ import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.util.Log;
 
-import com.xhh.modpe.java4modpe.module.model.AppData;
+
+import com.xhh.modpe.java4modpe.model.AppData;
 
 import java.io.File;
 import java.io.IOException;
@@ -118,7 +119,7 @@ public class ModuleUtil {
         return packageInfos;
     }
 
-    public static ArrayList<AppData> getModules(ArrayList<PackageInfo> packageInfos,Context context) {
+    public static ArrayList<AppData> getModules(ArrayList<PackageInfo> packageInfos, Context context) {
         ArrayList<AppData> appDatas = new ArrayList<>();
         for (PackageInfo packageInfo : packageInfos) {
             AppData appData = getAppData(packageInfo,context);
