@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.xhh.modpe.java4modpe.manager.ModuleManager;
+import com.xhh.modpe.java4modpe.module.manager.ModuleManager;
 import com.xhh.modpe.java4modpe.model.AppData;
 import com.xhh.modpe.java4modpe.module.base.Function;
 

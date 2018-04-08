@@ -1,4 +1,4 @@
-package com.xhh.modpe.java4modpe.manager;
+package com.xhh.modpe.java4modpe.module.manager;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,10 +13,10 @@ import android.content.res.Resources;
 import com.xhh.modpe.java4modpe.model.AppData;
 import com.xhh.modpe.java4modpe.module.base.Function;
 import com.xhh.modpe.java4modpe.util.ModuleUtil;
+import com.xhh.modpe.library.Application;
 import com.xhh.modpe.library.base.IFunction;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -122,7 +122,7 @@ public class ModuleManager implements Runnable {
             Class<?> clazz = dcLoader.loadClass(appData.getApplication());
             Constructor constructor=clazz.getConstructor(Activity.class,Context.class);
             object=constructor.newInstance(activity,ctxMod);
-            Function.getInstance().addListener((IFunction) object);
+            Function.getInstance().addListener((Application) object);
             appData.setClassLoader(dcLoader);
         } catch (Exception e) {
             e.printStackTrace();

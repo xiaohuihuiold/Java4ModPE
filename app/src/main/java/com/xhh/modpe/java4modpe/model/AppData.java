@@ -2,6 +2,10 @@ package com.xhh.modpe.java4modpe.model;
 
 import android.graphics.drawable.Drawable;
 
+import com.xhh.modpe.library.Application;
+
+import java.util.Objects;
+
 public class AppData {
 
     private String name;
