@@ -1,8 +1,4 @@
-package com.xhh.modpe.java4modpe.module.base;
-
-import android.util.Log;
-
-import com.xhh.modpe.library.base.IFunction;
+package com.xhh.modpe.library.base;
 
 import java.util.ArrayList;
 

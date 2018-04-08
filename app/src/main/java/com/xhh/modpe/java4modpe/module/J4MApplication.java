@@ -6,7 +6,8 @@ import android.widget.Toast;
 
 import com.xhh.modpe.java4modpe.module.manager.ModuleManager;
 import com.xhh.modpe.java4modpe.model.AppData;
-import com.xhh.modpe.java4modpe.module.base.Function;
+import com.xhh.modpe.java4modpe.util.ModuleUtil;
+import com.xhh.modpe.library.base.Function;
 
 import java.util.ArrayList;
 
@@ -32,7 +33,7 @@ public class J4MApplication implements ModuleManager.OnModuleLoadListener{
 
     @Override
     public void onFinished(ArrayList<AppData> appDatas) {
-        print("模块加载完成");
+        print("模块加载完成:"+appDatas.size()+"个");
     }
 
     public void attackHook(long attacker, long victim) {

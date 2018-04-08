@@ -11,10 +11,9 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 
 import com.xhh.modpe.java4modpe.model.AppData;
-import com.xhh.modpe.java4modpe.module.base.Function;
+import com.xhh.modpe.library.base.Function;
 import com.xhh.modpe.java4modpe.util.ModuleUtil;
 import com.xhh.modpe.library.Application;
-import com.xhh.modpe.library.base.IFunction;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -33,6 +32,7 @@ public class ModuleManager implements Runnable {
     private Activity activity;
     private Context context;
     private ArrayList<AppData> appDatas = new ArrayList<>();
+    public ArrayList<String> enables = new ArrayList<>();
 
     private ArrayList<OnModuleLoadListener> onModuleLoadListeners = new ArrayList<>();
 
@@ -43,6 +43,7 @@ public class ModuleManager implements Runnable {
     private ModuleManager(Activity activity, Context context) {
         this.activity = activity;
         this.context = context;
+        enables = ModuleUtil.getEnableModules(context);
         new Thread(this).start();
     }
 
@@ -64,6 +65,7 @@ public class ModuleManager implements Runnable {
     private ArrayList<AppData> getModules(ArrayList<PackageInfo> packageInfos) {
         ArrayList<AppData> appDatas = new ArrayList<>();
         for (PackageInfo packageInfo : packageInfos) {
+            if (!enables.contains(packageInfo.packageName)) continue;
             AppData appData = getAppData(packageInfo);
             if (appData != null) {
                 appDatas.add(appData);
@@ -120,9 +122,8 @@ public class ModuleManager implements Runnable {
 
             DexClassLoader dcLoader = new DexClassLoader(dexPath, dexOutputDir, libPath, getClass().getClassLoader());
             Class<?> clazz = dcLoader.loadClass(appData.getApplication());
-            Constructor constructor=clazz.getConstructor(Activity.class,Context.class);
-            object=constructor.newInstance(activity,ctxMod);
-            Function.getInstance().addListener((Application) object);
+            Constructor constructor = clazz.getConstructor(Activity.class, Context.class);
+            object = constructor.newInstance(activity, ctxMod);
             appData.setClassLoader(dcLoader);
         } catch (Exception e) {
             e.printStackTrace();

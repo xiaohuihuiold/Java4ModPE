@@ -3,6 +3,7 @@ package com.xhh.modpe.library;
 import android.app.Activity;
 import android.content.Context;
 
+import com.xhh.modpe.library.base.Function;
 import com.xhh.modpe.library.base.IFunction;
 
 public class Application implements IFunction ,Runnable{
@@ -14,6 +15,7 @@ public class Application implements IFunction ,Runnable{
         this.activity=activity;
         this.context=context;
         activity.runOnUiThread(this);
+        Function.getInstance().addListener(this);
     }
 
     @Override
