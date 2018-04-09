@@ -1,61 +1,65 @@
-package com.xhh.modpe.library;
+package com.xhh.modpe.library.base;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.Window;
 
-import com.xhh.modpe.library.activity.BaseActivity;
-import com.xhh.modpe.library.base.Function;
-import com.xhh.modpe.library.base.IFunction;
-import com.xhh.modpe.library.window.BaseWindow;
+import com.xhh.modpe.library.Application;
+import com.xhh.modpe.library.Mod;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
-public class Application implements IFunction ,Runnable{
+public abstract class BaseDialog extends Dialog implements IFunction {
 
     private Activity activity;
-    private Context context;
+    private Context contextMod;
 
-    public Application(Activity activity, Context context){
-        this.activity=activity;
-        this.context=context;
-        activity.runOnUiThread(this);
+    public BaseDialog(Context context) {
+        super(context);
+        this.activity = (Activity) context;
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         Function.getInstance().addListener(this);
     }
 
+    public void setView(int resourcesId) {
+        setView(LayoutInflater.from(getContextMod()).inflate(getContextMod().getResources().getLayout(resourcesId), null, false));
+    }
+
+    public void setView(View view) {
+        setContentView(view);
+    }
+
+    public View findViewById(int resourceId) {
+        return getWindow().findViewById(resourceId);
+    }
+
+    public void showWindow(Class clazz) {
+        Application.showWindow(getActivity(), getContextMod(), clazz);
+    }
+
+    public void startActivity(Class clazz) {
+        Application.startActivity(getActivity(), getContextMod(), clazz);
+    }
+
     @Override
-    public void run() {
-
+    protected void onStop() {
+        super.onStop();
+        Function.getInstance().removeListener(this);
     }
 
-    public static void showWindow(Activity activity, Context context, Class clazz) {
-        try {
-            Constructor<?> constructor = clazz.getConstructor(Context.class);
-            BaseWindow baseActivity = (BaseWindow) constructor.newInstance(activity);
-            baseActivity.setContextMod(context);
-            baseActivity.show();
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            e.printStackTrace();
-        }
+    public void onUI(Runnable runnable) {
+        getActivity().runOnUiThread(runnable);
     }
 
-    public static void startActivity(Activity activity, Context context, Class clazz) {
-        try {
-            Constructor<?> constructor = clazz.getConstructor(Context.class);
-            BaseActivity baseActivity = (BaseActivity) constructor.newInstance(activity);
-            baseActivity.setContextMod(context);
-            baseActivity.show();
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            e.printStackTrace();
-        }
+    public abstract void onCreate();
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
     }
 
-    public Activity getActivity() {
-        return activity;
-    }
-
-    public Context getContext() {
-        return context;
+    public void setContextMod(Context contextMod) {
+        this.contextMod = contextMod;
     }
 
     @Override
@@ -177,4 +181,13 @@ public class Application implements IFunction ,Runnable{
     public void useItem(int x, int y, int z, int itemid, int blockid, int side, int itemDamage, int blockDamage) {
 
     }
+
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public Context getContextMod() {
+        return contextMod;
+    }
+
 }
